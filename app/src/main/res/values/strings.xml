@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">U-Cek</string>
+    <string name="intro">Mau tau data diri lengkapmu? Isi yang di bawah ini yah!!</string>
+    <string name="nama_pertama">Nama Pertama</string>
+    <string name="nim">NIM</string>
+    <string name="fk_teknik">Teknik</string>
+    <string name="fk_nonteknik">Non-Teknik</string>
+    <string name="cari">Cari</string>
+    <string name="input_invalid">Tidak boleh kosong.</string>
 </resources>

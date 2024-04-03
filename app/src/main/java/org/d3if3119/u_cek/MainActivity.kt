@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import org.d3if3119.u_cek.ui.screen.ScreenContent
 import org.d3if3119.u_cek.ui.theme.UCekTheme
 
 class MainActivity : ComponentActivity() {
@@ -29,7 +30,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    MainScreen()
                 }
             }
         }
@@ -38,7 +39,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(content: @Composable (Modifier) -> Unit) {
+fun MainScreen() {
     Scaffold (
         topBar = {
             TopAppBar(
@@ -52,17 +53,7 @@ fun MainScreen(content: @Composable (Modifier) -> Unit) {
             )
         }
     ) {padding ->
-        content(Modifier.padding(padding))
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    MainScreen {modifier ->
-        Text(
-            text = "Hello $name!",
-            modifier = modifier
-        )
+        ScreenContent(Modifier.padding(padding))
     }
 }
 
@@ -71,6 +62,6 @@ fun Greeting(name: String) {
 @Composable
 fun ScreenPreview() {
     UCekTheme {
-        Greeting("Android")
+        MainScreen()
     }
 }
