@@ -23,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -41,6 +42,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import org.d3if3119.u_cek.R
 import org.d3if3119.u_cek.ui.theme.UCekTheme
 
@@ -68,9 +70,11 @@ fun MainScreen() {
 fun ScreenContent(modifier: Modifier) {
     var nama by remember { mutableStateOf("") }
     var namaError by remember { mutableStateOf(false) }
+    var namaisError by remember { mutableStateOf(false) }
 
     var nim by remember { mutableStateOf("") }
     var nimError by remember { mutableStateOf(false) }
+    var nimisError by remember { mutableStateOf(false) }
 
     val radioOptions = listOf(
         stringResource(id = R.string.fk_teknik),
@@ -93,7 +97,11 @@ fun ScreenContent(modifier: Modifier) {
         )
         OutlinedTextField(
             value = nama,
-            onValueChange = { nama = it },
+            onValueChange = {
+                nama = it
+                namaError = it.isEmpty()
+                namaisError = it.isDigitsOnly()
+                            },
             label = { Text(text = stringResource(id = R.string.nama_pertama)) },
             isError = namaError,
             supportingText = { ErrorHint(namaError) },
@@ -106,7 +114,11 @@ fun ScreenContent(modifier: Modifier) {
         )
         OutlinedTextField(
             value = nim,
-            onValueChange = { nim = it},
+            onValueChange = {
+                nim = it
+                nimError = it.isEmpty()
+                nimisError = it.contains("")
+                            },
             label = { Text(text = stringResource(id = R.string.nim)) },
             isError = nimError,
             supportingText = { ErrorHint(nimError) },
@@ -139,15 +151,40 @@ fun ScreenContent(modifier: Modifier) {
         }
         Button(
             onClick = {
-                namaError = (nama == "" || nama == "0")
-                nimError = (nim == "" || nim == "0")
-                if (namaError || nimError) return@Button
+                namaError = (nama == "" || nama.toIntOrNull() != null)
+                nimError = (nim == "" || nim.toIntOrNull() == null)
+                if (namaError || nimError) {
+                }
             },
             modifier = Modifier.padding(top = 8.dp),
-            contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 32.dp, vertical = 16.dp)
         ) {
-            Text(text = stringResource(id = R.string.cari))
+            Text(text = "Cari")
         }
+
+        if (namaisError && nimisError) {
+            Snackbar(
+                content = {
+                    Text(text = "NIM tidak boleh berupa huruf dan nama tidak boleh berupa angka!")
+                },
+                modifier = Modifier.padding(16.dp)
+            )
+        } else if (namaisError) {
+            Snackbar(
+                content = {
+                    Text(text = "Nama tidak boleh berupa angka!")
+                },
+                modifier = Modifier.padding(16.dp)
+            )
+        } else if (nimisError) {
+            Snackbar(
+                content = {
+                    Text(text = "NIM tidak boleh berupa huruf!")
+                },
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+
     }
 }
 
